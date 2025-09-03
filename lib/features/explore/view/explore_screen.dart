@@ -1,16 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:wallpix/features/explore/view/widgets/explore_grid_view.dart';
-import 'package:wallpix/features/explore/view_model/explore_view_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wallpix/features/explore/bloc/explore_bloc.dart';
+import 'package:wallpix/features/explore/bloc/explore_event.dart';
+import 'package:wallpix/features/explore/bloc/explore_state.dart';
+import 'package:wallpix/features/explore/service/explore_api_service.dart';
+import 'widgets/explore_grid_view.dart';
 
-class ExploreScreen extends StatefulWidget {
+class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
 
   @override
-  State<ExploreScreen> createState() => _ExploreScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          ExploreBloc(ExploreApiService())..add(FetchPhotos('sports')),
+      child: const ExploreView(),
+    );
+  }
 }
 
-class _ExploreScreenState extends State<ExploreScreen> {
+class ExploreView extends StatefulWidget {
+  const ExploreView({super.key});
+
+  @override
+  State<ExploreView> createState() => _ExploreViewState();
+}
+
+class _ExploreViewState extends State<ExploreView> {
   final List<Map<String, dynamic>> categories = [
     {'name': 'sports', 'icon': Icons.sports_soccer, 'color': Colors.orange},
     {'name': 'nature', 'icon': Icons.nature, 'color': Colors.green},
@@ -25,16 +41,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   ];
 
   @override
-  void initState() {
-    super.initState();
-    Future.microtask(() {
-      if (mounted) context.read<ExploreViewModel>().fetch();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<ExploreViewModel>();
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -70,76 +77,82 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   final category = categories[index];
-                  final isSelected =
-                      viewModel.selectedCategory == category['name'];
-
-                  return Container(
-                    margin: const EdgeInsets.only(right: 12),
-                    child: GestureDetector(
-                      onTap: () {
-                        context.read<ExploreViewModel>().changeCategory(
-                          category['name'],
-                        );
-                      },
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          gradient: isSelected
-                              ? LinearGradient(
-                                  colors: [
-                                    category['color'].withOpacity(0.8),
-                                    category['color'],
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                )
-                              : null,
-                          color: isSelected
-                              ? null
-                              : theme.colorScheme.surfaceVariant,
-                          borderRadius: BorderRadius.circular(25),
-                          boxShadow: isSelected
-                              ? [
-                                  BoxShadow(
-                                    color: category['color'].withOpacity(0.3),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 4),
-                                  ),
-                                ]
-                              : null,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              category['icon'],
+                  return BlocBuilder<ExploreBloc, ExploreState>(
+                    builder: (context, state) {
+                      final isSelected =
+                          state is ExploreLoaded &&
+                          state.selectedCategory == category['name'];
+                      return Container(
+                        margin: const EdgeInsets.only(right: 12),
+                        child: GestureDetector(
+                          onTap: () {
+                            context.read<ExploreBloc>().add(
+                              ChangeCategory(category['name']),
+                            );
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 12,
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: isSelected
+                                  ? LinearGradient(
+                                      colors: [
+                                        category['color'].withOpacity(0.8),
+                                        category['color'],
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    )
+                                  : null,
                               color: isSelected
-                                  ? Colors.white
-                                  : theme.colorScheme.onSurfaceVariant,
-                              size: 24,
+                                  ? null
+                                  : theme.colorScheme.surfaceVariant,
+                              borderRadius: BorderRadius.circular(25),
+                              boxShadow: isSelected
+                                  ? [
+                                      BoxShadow(
+                                        color: category['color'].withOpacity(
+                                          0.3,
+                                        ),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ]
+                                  : null,
                             ),
-                            const SizedBox(height: 6),
-                            Text(
-                              category['name'],
-                              style: TextStyle(
-                                color: isSelected
-                                    ? Colors.white
-                                    : theme.colorScheme.onSurfaceVariant,
-                                fontWeight: isSelected
-                                    ? FontWeight.w600
-                                    : FontWeight.w500,
-                                fontSize: 12,
-                              ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  category['icon'],
+                                  color: isSelected
+                                      ? Colors.white
+                                      : theme.colorScheme.onSurfaceVariant,
+                                  size: 24,
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  category['name'],
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? Colors.white
+                                        : theme.colorScheme.onSurfaceVariant,
+                                    fontWeight: isSelected
+                                        ? FontWeight.w600
+                                        : FontWeight.w500,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   );
                 },
               ),

@@ -1,8 +1,9 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wallpix/features/explore/bloc/explore_bloc.dart';
+import 'package:wallpix/features/explore/bloc/explore_event.dart';
+import 'package:wallpix/features/explore/bloc/explore_state.dart';
 import 'package:wallpix/features/explore/model/photo_model.dart';
-import 'package:wallpix/features/explore/view_model/explore_view_model.dart';
 import 'package:wallpix/features/photo/view/photo_screen.dart';
 
 class ExploreGridView extends StatelessWidget {
@@ -10,90 +11,84 @@ class ExploreGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<ExploreViewModel, Tuple2<List<PhotoModel>, bool>>(
-      selector: (_, viewModel) => Tuple2(viewModel.photos, viewModel.isLoading),
-      builder: (context, tuple, child) {
-        final photos = tuple.value1;
-        final isLoading = tuple.value2;
+    return BlocBuilder<ExploreBloc, ExploreState>(
+      builder: (context, state) {
         final theme = Theme.of(context);
-
-        if (isLoading && photos.isEmpty) {
+        if (state is ExploreLoading) {
           return _buildLoadingState();
         }
 
-        if (photos.isEmpty) {
-          return _buildEmptyState(theme);
-        }
+        if (state is ExploreLoaded) {
+          if (state.photos.isEmpty) {
+            return _buildEmptyState(theme);
+          }
 
-        return NotificationListener<ScrollNotification>(
-          onNotification: (notification) {
-            if (notification.metrics.pixels ==
-                notification.metrics.maxScrollExtent) {
-              context.read<ExploreViewModel>().fetchMore();
-            }
-            return true;
-          },
-          child: Column(
-            children: [
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.7,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
+          return NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              if (notification.metrics.pixels ==
+                  notification.metrics.maxScrollExtent) {
+                context.read<ExploreBloc>().add(FetchMorePhotos());
+              }
+              return true;
+            },
+            child: Column(
+              children: [
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                  ),
+                  itemCount: state.photos.length,
+                  padding: const EdgeInsets.all(20),
+                  itemBuilder: (context, index) {
+                    final photo = state.photos[index];
+                    return _buildPhotoCard(context, photo, index);
+                  },
                 ),
-                itemCount: photos.length,
-                padding: const EdgeInsets.all(20),
-                itemBuilder: (context, index) {
-                  final photo = photos[index];
-                  return _buildPhotoCard(context, photo, index);
-                },
-              ),
-              Consumer<ExploreViewModel>(
-                builder: (context, viewModel, child) {
-                  if (viewModel.isLoadingMore) {
-                    return Container(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                theme.colorScheme.primary,
-                              ),
+                if (state.isLoadingMore)
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              theme.colorScheme.primary,
                             ),
                           ),
-                          const SizedBox(width: 12),
-                          Text(
-                            "Loading more...",
-                            style: TextStyle(
-                              color: theme.colorScheme.onSurfaceVariant,
-                              fontSize: 14,
-                            ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          "Loading more...",
+                          style: TextStyle(
+                            color: theme.colorScheme.onSurfaceVariant,
+                            fontSize: 14,
                           ),
-                        ],
-                      ),
-                    );
-                  }
-                  return const SizedBox(height: 20);
-                },
-              ),
-            ],
-          ),
-        );
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  const SizedBox(height: 20),
+              ],
+            ),
+          );
+        }
+        return const SizedBox.shrink();
       },
     );
   }
 
   Widget _buildPhotoCard(BuildContext context, PhotoModel photo, int index) {
     final theme = Theme.of(context);
-
     return Hero(
       tag: 'photo_${photo.id}_$index',
       child: GestureDetector(
@@ -107,12 +102,10 @@ class ExploreGridView extends StatelessWidget {
                     const begin = Offset(0.0, 1.0);
                     const end = Offset.zero;
                     const curve = Curves.easeInOutCubic;
-
                     var tween = Tween(
                       begin: begin,
                       end: end,
                     ).chain(CurveTween(curve: curve));
-
                     return SlideTransition(
                       position: animation.drive(tween),
                       child: child,
@@ -166,7 +159,6 @@ class ExploreGridView extends StatelessWidget {
                     );
                   },
                 ),
-                // Gradient overlay for better text readability
                 Positioned(
                   bottom: 0,
                   left: 0,
@@ -185,7 +177,6 @@ class ExploreGridView extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Photographer name
                 Positioned(
                   bottom: 8,
                   left: 12,
@@ -201,7 +192,6 @@ class ExploreGridView extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                // Favorite button (optional - you can add this functionality)
                 Positioned(
                   top: 8,
                   right: 8,

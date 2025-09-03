@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wallpix/features/explore/view/explore_screen_provider.dart';
+import 'package:wallpix/features/explore/view/explore_screen.dart';
 
 class Application extends StatelessWidget {
   const Application({super.key});
@@ -8,7 +8,7 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ExploreScreenProvider(),
+      home: const ExploreScreen(),
       theme: ThemeData(
         brightness: Brightness.dark,
         fontFamily: GoogleFonts.montserrat().fontFamily,
