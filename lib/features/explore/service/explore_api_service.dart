@@ -15,8 +15,6 @@ class ExploreApiService {
       "https://api.pexels.com/v1/search?query=$category&page=$page&per_page=$perPage",
     );
 
-    print("GET : $uri");
-
     final response = await _client.get(
       uri,
       headers: {"Authorization": _apiKey ?? ""},
