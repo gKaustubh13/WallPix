@@ -1,4 +1,3 @@
-// lib/features/photo/view/widgets/photo_details_modal.dart
 import 'package:flutter/material.dart';
 import 'package:wallpix/features/explore/model/photo_model.dart';
 import 'photo_description_card.dart';
@@ -22,7 +21,6 @@ class PhotoDetailsModal extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Handle bar
           Center(
             child: Container(
               width: 40,
@@ -35,7 +33,6 @@ class PhotoDetailsModal extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          // Title
           const Text(
             "Photo Details",
             style: TextStyle(
@@ -46,17 +43,14 @@ class PhotoDetailsModal extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          // Photo description
           if (photo.alt.isNotEmpty) ...[
             PhotoDescriptionCard(description: photo.alt),
             const SizedBox(height: 20),
           ],
 
-          // Photographer info
           PhotographerInfoCard(photographer: photo.photographer),
           const SizedBox(height: 20),
 
-          // Image details
           ImageInfoCard(
             width: photo.width,
             height: photo.height,
@@ -64,7 +58,6 @@ class PhotoDetailsModal extends StatelessWidget {
           ),
           const SizedBox(height: 32),
 
-          // Close button
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(

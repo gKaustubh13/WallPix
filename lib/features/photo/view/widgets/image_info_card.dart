@@ -1,4 +1,3 @@
-// lib/features/photo/view/widgets/image_info_card.dart
 import 'package:flutter/material.dart';
 
 class ImageInfoCard extends StatelessWidget {

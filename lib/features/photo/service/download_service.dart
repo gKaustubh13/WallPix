@@ -1,4 +1,3 @@
-// lib/services/download_service.dart
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +12,6 @@ class DownloadService {
     try {
       _showToast("Downloading wallpaper...");
 
-      // Download image using http
       final response = await http.get(Uri.parse(imageUrl));
 
       if (response.statusCode != 200) {
@@ -21,7 +19,6 @@ class DownloadService {
         return false;
       }
 
-      // Save using Save As dialog
       final success = await _saveWithDialog(response.bodyBytes, fileName);
 
       if (success) {
@@ -37,7 +34,6 @@ class DownloadService {
     }
   }
 
-  /// Uses FlutterFileDialog to let user choose save location
   static Future<bool> _saveWithDialog(List<int> bytes, String fileName) async {
     try {
       final params = SaveFileDialogParams(

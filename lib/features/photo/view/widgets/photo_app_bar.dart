@@ -1,4 +1,3 @@
-// lib/features/photo/view/widgets/photo_app_bar.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

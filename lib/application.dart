@@ -9,6 +9,7 @@ class Application extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: const ExploreScreen(),
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
         fontFamily: GoogleFonts.montserrat().fontFamily,

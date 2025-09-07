@@ -1,4 +1,3 @@
-// lib/features/photo/view/widgets/photo_viewer.dart
 import 'package:flutter/material.dart';
 import 'package:wallpix/features/explore/model/photo_model.dart';
 

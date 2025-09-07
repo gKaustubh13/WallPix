@@ -1,4 +1,3 @@
-// lib/features/photo/view/widgets/download_fab.dart
 import 'package:flutter/material.dart';
 
 class DownloadFAB extends StatelessWidget {

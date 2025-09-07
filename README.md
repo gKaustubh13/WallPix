@@ -9,6 +9,7 @@ A Flutter wallpaper app that fetches high-quality images from Pexels API with an
 - Smooth animations and infinite scroll
 - Photo details with photographer credits
 - Interactive zoom & pan functionality
+- Download wallpapers to device
 - Dark theme with Material Design
 
 ## Architecture 🏗️
@@ -20,20 +21,29 @@ A Flutter wallpaper app that fetches high-quality images from Pexels API with an
 ## Key Packages 📦
 
 - `flutter_bloc` - State management
-- `http` - API calls  
+- `http` - API calls
 - `google_fonts` - Typography
 - `flutter_dotenv` - Environment variables
+- `fluttertoast` - User notifications
+- `flutter_file_dialog` - Download and store files
 
 ## Project Structure
 
 ```
 lib/
-├── features/
-│   ├── explore/          # Home screen with categories
-│   │   ├── bloc/         # State management
-│   │   ├── model/        # Data models
-│   │   ├── service/      # API service
-│   │   └── view/         # UI components
-│   └── photo/            # Photo detail screen
-└── application.dart      # App configuration
+├─ features/
+│  ├─ explore/             # Home screen with categories
+│  │  ├─ bloc/             # State management
+│  │  ├─ model/            # Data models
+│  │  ├─ service/          # API service
+│  │  └─ view/             # UI components
+│  │     └─ widgets/       # Reusable UI components
+│  └─ photo/               # Photo detail screen
+│     ├─ service/          # Wallpaper Download Service
+│     └─ view/             # UI components
+│        └─ widgets/       # Reusable UI components
+│
+├─ application.dart        # App configuration
+└─ main.dart               # Entry point
+
 ```
