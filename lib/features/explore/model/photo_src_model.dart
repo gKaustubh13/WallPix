@@ -1,5 +1,4 @@
 class PhotoSrcModel {
-
   const PhotoSrcModel({
     required this.original,
     required this.large2x,
@@ -8,19 +7,19 @@ class PhotoSrcModel {
     required this.small,
     required this.portrait,
     required this.landscape,
-    required this.tiny
+    required this.tiny,
   });
 
-  factory PhotoSrcModel.fromMap(Map<String, dynamic> map){
+  factory PhotoSrcModel.fromMap(Map<String, dynamic> map) {
     return PhotoSrcModel(
-      original: map["original"] as String,
-      large2x: map["large2x"] as String,
-      large: map["large"] as String,
-      medium: map["medium"] as String,
-      small: map["small"] as String,
-      portrait: map["portrait"] as String,
-      landscape: map["landscape"] as String,
-      tiny: map["tiny"] as String,
+      original: map['original'] as String,
+      large2x: map['large2x'] as String,
+      large: map['large'] as String,
+      medium: map['medium'] as String,
+      small: map['small'] as String,
+      portrait: map['portrait'] as String,
+      landscape: map['landscape'] as String,
+      tiny: map['tiny'] as String,
     );
   }
   final String original;
@@ -30,6 +29,5 @@ class PhotoSrcModel {
   final String small;
   final String portrait;
   final String landscape;
-  final String tiny; 
+  final String tiny;
 }
-

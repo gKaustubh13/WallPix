@@ -1,7 +1,6 @@
 import 'package:wallpix/features/explore/model/photo_src_model.dart';
 
 class PhotoModel {
-
   const PhotoModel({
     required this.id,
     required this.width,
@@ -16,7 +15,7 @@ class PhotoModel {
     required this.alt,
   });
 
-factory PhotoModel.fromMap(Map<String, dynamic> map) {
+  factory PhotoModel.fromMap(Map<String, dynamic> map) {
     return PhotoModel(
       id: map["id"] as int,
       width: map["width"] as int,
@@ -32,7 +31,6 @@ factory PhotoModel.fromMap(Map<String, dynamic> map) {
     );
   }
 
-
   final int id;
   final int width;
   final int height;
@@ -45,4 +43,3 @@ factory PhotoModel.fromMap(Map<String, dynamic> map) {
   final bool liked;
   final String alt;
 }
-

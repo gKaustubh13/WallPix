@@ -1,16 +1,39 @@
-# wallpix
+# WallPix 📱
 
-A new Flutter project.
+A Flutter wallpaper app that fetches high-quality images from Pexels API with an elegant dark theme interface.
 
-## Getting Started
+## Features ✨
 
-This project is a starting point for a Flutter application.
+- Browse wallpapers across 10+ categories (Sports, Nature, Cars, Animals, etc.)
+- High-quality images from Pexels API
+- Smooth animations and infinite scroll
+- Photo details with photographer credits
+- Interactive zoom & pan functionality
+- Dark theme with Material Design
 
-A few resources to get you started if this is your first Flutter project:
+## Architecture 🏗️
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Pattern**: BLoC for state management
+- **Structure**: Feature-based with Clean Architecture
+- **API**: Pexels REST API integration
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Key Packages 📦
+
+- `flutter_bloc` - State management
+- `http` - API calls  
+- `google_fonts` - Typography
+- `flutter_dotenv` - Environment variables
+
+## Project Structure
+
+```
+lib/
+├── features/
+│   ├── explore/          # Home screen with categories
+│   │   ├── bloc/         # State management
+│   │   ├── model/        # Data models
+│   │   ├── service/      # API service
+│   │   └── view/         # UI components
+│   └── photo/            # Photo detail screen
+└── application.dart      # App configuration
+```
