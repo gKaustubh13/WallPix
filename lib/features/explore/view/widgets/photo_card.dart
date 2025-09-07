@@ -12,7 +12,7 @@ class PhotoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Hero(
-      tag: 'photo_${photo.id}_$index',
+      tag: 'photo_${photo.id}',
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).push(
@@ -112,22 +112,6 @@ class PhotoCard extends StatelessWidget {
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.3),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.favorite_border,
-                      color: Colors.white,
-                      size: 18,
-                    ),
                   ),
                 ),
               ],

@@ -1,15 +1,9 @@
 abstract class ExploreEvent {}
 
 class FetchPhotos extends ExploreEvent {
-  final String category;
+  final String query;
 
-  FetchPhotos(this.category);
+  FetchPhotos(this.query);
 }
 
 class FetchMorePhotos extends ExploreEvent {}
-
-class ChangeCategory extends ExploreEvent {
-  final String category;
-
-  ChangeCategory(this.category);
-}

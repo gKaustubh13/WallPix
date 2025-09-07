@@ -4,8 +4,6 @@ import 'package:wallpix/features/explore/bloc/explore_bloc.dart';
 import 'package:wallpix/features/explore/bloc/explore_event.dart';
 import 'package:wallpix/features/explore/service/explore_api_service.dart';
 import 'widgets/explore_grid_view.dart';
-import 'widgets/explore_app_bar.dart';
-import 'widgets/category_list_view.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
@@ -14,7 +12,7 @@ class ExploreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          ExploreBloc(ExploreApiService())..add(FetchPhotos('sports')),
+          ExploreBloc(ExploreApiService())..add(FetchPhotos('Minimal')),
       child: const ExploreView(),
     );
   }
@@ -28,18 +26,6 @@ class ExploreView extends StatefulWidget {
 }
 
 class _ExploreViewState extends State<ExploreView> {
-  final List<Map<String, dynamic>> categories = [
-    {'name': 'sports', 'icon': Icons.sports_soccer, 'color': Colors.orange},
-    {'name': 'nature', 'icon': Icons.nature, 'color': Colors.green},
-    {'name': 'cars', 'icon': Icons.directions_car, 'color': Colors.blue},
-    {'name': 'animals', 'icon': Icons.pets, 'color': Colors.amber},
-    {'name': 'cities', 'icon': Icons.location_city, 'color': Colors.grey},
-    {'name': 'technology', 'icon': Icons.computer, 'color': Colors.purple},
-    {'name': 'food', 'icon': Icons.restaurant, 'color': Colors.red},
-    {'name': 'travel', 'icon': Icons.flight, 'color': Colors.teal},
-    {'name': 'art', 'icon': Icons.palette, 'color': Colors.pink},
-    {'name': 'music', 'icon': Icons.music_note, 'color': Colors.indigo},
-  ];
   final _scrollController = ScrollController();
 
   @override
@@ -75,14 +61,27 @@ class _ExploreViewState extends State<ExploreView> {
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          const ExploreAppBar(),
-          CategoryListView(categories: categories),
-          const ExploreGridView(),
-        ],
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: theme.colorScheme.surface,
+        title: TextField(
+          decoration: InputDecoration(
+            hintText: 'Search for wallpapers...',
+            prefixIcon: const Icon(Icons.search),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+              borderSide: BorderSide.none,
+            ),
+            filled: true,
+            fillColor: theme.colorScheme.surfaceVariant,
+            contentPadding: const EdgeInsets.symmetric(vertical: 0),
+          ),
+          onChanged: (query) {
+            context.read<ExploreBloc>().add(FetchPhotos(query));
+          },
+        ),
       ),
+      body: ExploreGridView(controller: _scrollController),
     );
   }
 }

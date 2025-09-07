@@ -41,6 +41,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   fluttertoast: ^8.2.12
   flutter_file_dialog: ^3.0.0
+  bloc_concurrency: ^0.3.0
 
 dev_dependencies:
   flutter_test:

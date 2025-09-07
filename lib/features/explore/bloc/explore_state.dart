@@ -1,4 +1,5 @@
 import 'package:wallpix/features/explore/model/photo_model.dart';
+
 abstract class ExploreState {}
 
 class ExploreInitial extends ExploreState {}
@@ -9,14 +10,14 @@ class ExploreLoaded extends ExploreState {
   final List<PhotoModel> photos;
   final int page;
   final int totalResults;
-  final String selectedCategory;
+  final String searchQuery;
   final bool isLoadingMore;
 
   ExploreLoaded({
     required this.photos,
     required this.page,
     required this.totalResults,
-    required this.selectedCategory,
+    required this.searchQuery,
     this.isLoadingMore = false,
   });
 
@@ -29,7 +30,7 @@ class ExploreLoaded extends ExploreState {
       photos: photos ?? this.photos,
       page: page ?? this.page,
       totalResults: totalResults,
-      selectedCategory: selectedCategory,
+      searchQuery: searchQuery,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     );
   }

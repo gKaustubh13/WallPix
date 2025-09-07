@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wallpix/features/explore/model/photo_model.dart';
 import 'package:wallpix/features/photo/service/download_service.dart';
+import 'package:wallpix/features/photo/view/widgets/download_fab.dart';
 import 'widgets/photo_app_bar.dart';
 import 'widgets/photo_viewer.dart';
 import 'widgets/photo_details_modal.dart';
-import 'widgets/download_fab.dart';
 
 class PhotoScreen extends StatefulWidget {
   const PhotoScreen({super.key, required this.photo});

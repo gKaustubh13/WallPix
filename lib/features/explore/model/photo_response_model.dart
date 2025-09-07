@@ -10,7 +10,7 @@ class PhotoResponseModel {
     required this.nextPage,
   });
 
-  factory PhotoResponseModel.fromJsonString(String jsonString){
+  factory PhotoResponseModel.fromJsonString(String jsonString) {
     final Map<String, dynamic> map = json.decode(jsonString);
     return PhotoResponseModel.fromMap(map);
   }
@@ -23,7 +23,7 @@ class PhotoResponseModel {
       photos: (map["photos"] as List)
           .map((map) => PhotoModel.fromMap(map))
           .toList(),
-      nextPage: map["next_page"] as String,
+      nextPage: map["next_page"] as String? ?? '',
     );
   }
 
@@ -33,4 +33,3 @@ class PhotoResponseModel {
   final List<PhotoModel> photos;
   final String nextPage;
 }
-

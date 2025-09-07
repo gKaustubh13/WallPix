@@ -20,14 +20,14 @@ class PhotoModel {
       id: map["id"] as int,
       width: map["width"] as int,
       height: map["height"] as int,
-      url: map["url"] as String,
-      photographer: map["photographer"] as String,
+      url: map["url"] as String? ?? '',
+      photographer: map["photographer"] as String? ?? '',
       photographerUrl: map["photographer_url"] as String? ?? '',
       photographerId: map["photographer_id"] as int,
-      avgColor: map["avg_color"] as String,
+      avgColor: map["avg_color"] as String? ?? '',
       src: PhotoSrcModel.fromMap(map["src"] as Map<String, dynamic>),
       liked: map["liked"] as bool,
-      alt: map["alt"] as String,
+      alt: map["alt"] as String? ?? '',
     );
   }
 
