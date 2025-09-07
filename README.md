@@ -4,13 +4,14 @@ A Flutter wallpaper app that fetches high-quality images from Pexels API with an
 
 ## Features ✨
 
-- Browse wallpapers across 10+ categories (Sports, Nature, Cars, Animals, etc.)
+- Browse wallpapers by using the Search feature
 - High-quality images from Pexels API
 - Smooth animations and infinite scroll
 - Photo details with photographer credits
 - Interactive zoom & pan functionality
-- Download wallpapers to device
+- Download wallpapers to the device
 - Dark theme with Material Design
+- Used pagination, debouncing, and throttling
 
 ## Architecture 🏗️
 
@@ -26,6 +27,7 @@ A Flutter wallpaper app that fetches high-quality images from Pexels API with an
 - `flutter_dotenv` - Environment variables
 - `fluttertoast` - User notifications
 - `flutter_file_dialog` - Download and store files
+- `bloc_concurrency` - For Debouncing and Throttling
 
 ## Project Structure
 
